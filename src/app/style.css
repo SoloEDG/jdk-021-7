@@ -834,3 +834,367 @@ footer {
     font-size: 8px;
   }
 }
+
+/* ============ 格子布局与厨师调度（flow） ============ */
+.grid-panel {
+  margin: 18px 0 16px;
+}
+.edit-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.edit-toolbar .tiny.active {
+  background: #da8548;
+  color: #fff;
+}
+.small-note {
+  font-size: 10px;
+}
+.grid-wrap {
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.grid-board {
+  display: grid;
+  gap: 4px;
+  min-width: 560px;
+}
+.grid-cell {
+  position: relative;
+  aspect-ratio: 1;
+  min-height: 52px;
+  border-radius: 8px;
+  border: 1px solid #e3e4d6;
+  background: #f4f3e9;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #3c5245;
+}
+.grid-cell:hover {
+  filter: brightness(0.97);
+}
+.grid-cell .cell-icon {
+  font-size: 19px;
+  line-height: 1;
+}
+.grid-cell .cell-label {
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  color: #7c8879;
+}
+.grid-cell.t-wall {
+  background: #6e675c;
+  border-color: #575148;
+}
+.grid-cell.t-wall .cell-icon {
+  filter: grayscale(0.2);
+}
+.grid-cell.t-pantry {
+  background: #eef1df;
+  border-color: #c3d0a8;
+}
+.grid-cell.t-prep {
+  background: #e6efe8;
+  border-color: #aecbb6;
+}
+.grid-cell.t-pass {
+  background: #f7ead9;
+  border-color: #e3bb8f;
+}
+.grid-cell.t-stove {
+  background: #f1e7e2;
+  border-color: #d7b0a0;
+}
+.grid-cell.start::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed #9bb09a;
+  border-radius: 6px;
+  pointer-events: none;
+}
+.grid-cell.path-1 {
+  box-shadow: inset 0 0 0 2px rgba(37, 77, 61, 0.55);
+}
+.grid-cell.path-2 {
+  box-shadow: inset 0 0 0 2px rgba(218, 133, 72, 0.6);
+}
+.grid-cell.issue {
+  background: #f6dcd6;
+  border-color: #cf6f5d;
+  animation: pulse-issue 1.2s infinite;
+}
+.issue-flag {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  color: #b6402d;
+  font-weight: 700;
+  font-size: 11px;
+}
+@keyframes pulse-issue {
+  50% {
+    box-shadow: 0 0 0 3px rgba(207, 111, 93, 0.35);
+  }
+}
+.chef-dot {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.chef-dot.chef-1 {
+  background: #254d3d;
+}
+.chef-dot.chef-2 {
+  background: #da8548;
+}
+.chef-dot b {
+  font-size: 10px;
+}
+.chef-dot i {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  font-size: 11px;
+  font-style: normal;
+  background: #fffdf7;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd5c2;
+}
+.preset-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.layout-hint {
+  font-size: 10px;
+  margin-bottom: 0;
+}
+.pill.bad {
+  background: #f6dcd6;
+  color: #b6402d;
+}
+.layout-block {
+  color: #b6402d;
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+.flow-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.chef-cards {
+  display: grid;
+  gap: 10px;
+}
+.chef-card {
+  border: 1px solid #e2e3d8;
+  border-left: 4px solid #254d3d;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fbfaf3;
+}
+.chef-card.chef-theme-2 {
+  border-left-color: #da8548;
+}
+.chef-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.status-dot.wait {
+  color: #b6402d;
+}
+.status-dot.move {
+  color: #254d3d;
+}
+.status-dot.work {
+  color: #da8548;
+}
+.chef-rows > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 3px 0;
+  gap: 8px;
+}
+.chef-rows small {
+  color: #8b9588;
+}
+.chef-rows .warn {
+  color: #b6402d;
+  text-align: right;
+}
+.chef-rows .red {
+  color: #a3aa97;
+}
+.chef-stats {
+  color: #7c8879;
+  font-size: 10px !important;
+  gap: 12px !important;
+  justify-content: flex-start !important;
+}
+.routing-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.routing-row .tiny.active {
+  background: #254d3d;
+  color: #fff;
+}
+.chef-theme-2 .routing-row .tiny.active {
+  background: #da8548;
+}
+.task-chains {
+  display: grid;
+  gap: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+.task-chain {
+  border: 1px solid #e2e3d8;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fbfaf3;
+}
+.task-chain > header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.task-chain ol {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  font-size: 11px;
+  color: #52674c;
+}
+.task-chain li {
+  padding: 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.task-chain li.running {
+  color: #254d3d;
+  font-weight: 600;
+}
+.task-chain li small {
+  color: #98a193;
+}
+.carried-tag {
+  font-style: normal;
+  font-size: 9px;
+  background: #f7ead9;
+  color: #b06a2f;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.task-chain > footer {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.bench-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0;
+}
+.bench-card {
+  border: 1px solid #e2e3d8;
+  border-radius: 8px;
+  padding: 14px;
+  background: #fbfaf3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bench-card strong {
+  font-size: 26px;
+  color: #52674c;
+}
+.bench-card strong small {
+  font-size: 11px;
+  color: #98a193;
+  font-weight: 400;
+}
+.bench-card.win {
+  border-color: #aecbb6;
+  background: #eef5ef;
+}
+.bench-card.win strong {
+  color: #254d3d;
+}
+.bench-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: #7c8879;
+}
+.dish-row.moving {
+  opacity: 0.75;
+  background: #f7f3ea;
+}
+@media (max-width: 1100px) {
+  .flow-row {
+    grid-template-columns: 1fr;
+  }
+  .bench-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.portion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 8px;
+}
+.portion-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #eef1df;
+  border: 1px solid #cdd6b6;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 10px;
+}
+.portion-chip b {
+  font-size: 10px;
+}
+.portion-chip small {
+  color: #6c7a63;
+}
+.portion-chip.carried {
+  background: #f7ead9;
+  border-color: #e3bb8f;
+}

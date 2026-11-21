@@ -6,6 +6,12 @@ import { PantryPanel } from "../features/pantry";
 import { KitchenPanel } from "../features/kitchen";
 import { ServicePanel } from "../features/service";
 import { LedgerPanel, ResultOverlay, totals } from "../features/ledger";
+import {
+  GridBoard,
+  ChefsPanel,
+  TaskQueue,
+  BenchCard,
+} from "../features/flow";
 const { game, toggle, restart } = useSession();
 </script>
 <template>
@@ -37,7 +43,7 @@ const { game, toggle, restart } = useSession();
         <div>
           <span class="eyebrow">THE LUNCH SHIFT</span>
           <h2>把忙碌，做成美味。</h2>
-          <p>备好食材，掌握火候，让每一位客人带着满足离开。</p>
+          <p>规划格子厨房，指挥两位厨师搬运备料、下锅与传菜，窄道会车也要见招拆招。</p>
           <button class="start-button" @click="toggle" :disabled="game.ended">
             {{
               game.running
@@ -47,6 +53,9 @@ const { game, toggle, restart } = useSession();
                   : "↗ 开始营业"
             }}
           </button>
+          <p v-if="game.layoutIssues.length" class="layout-block">
+            ⚠ 出口或设备未连通（{{ game.layoutIssues.length }} 处断点），修复后才能开餐
+          </p>
         </div>
         <div class="hero-art" aria-hidden="true">
           <div class="herb">✦</div>
@@ -79,6 +88,14 @@ const { game, toggle, restart } = useSession();
           >
         </div>
       </div>
+
+      <GridBoard :game="game" @command="(c) => dispatch(game, c)" />
+      <BenchCard :game="game" @command="(c) => dispatch(game, c)" />
+      <div class="flow-row">
+        <ChefsPanel :game="game" @command="(c) => dispatch(game, c)" />
+        <TaskQueue :game="game" @command="(c) => dispatch(game, c)" />
+      </div>
+
       <OrdersPanel :game="game" @command="(c) => dispatch(game, c)" />
       <div class="workspace">
         <PantryPanel

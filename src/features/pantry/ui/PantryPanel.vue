@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { Game, Command } from "../../../shared/types";
-import { recipeList } from "../../../shared/catalog";
+import { recipeList, recipes } from "../../../shared/catalog";
 import IngredientShelf from "./IngredientShelf.vue";
 import { preparationIssue } from "../lib/availability";
 defineProps<{ game: Game }>();
 defineEmits<{ command: [cmd: Command] }>();
+function chefName(game: Game, id?: number) {
+  return game.chefs.find((c) => c.id === id)?.name ?? "";
+}
 </script>
 <template>
   <section class="panel pantry-panel">
@@ -26,11 +29,27 @@ defineEmits<{ command: [cmd: Command] }>();
       >
         <span>{{ r.icon }}</span
         ><b>{{ r.name }}</b
-        ><small>备料 · 消耗1份</small>
+        ><small>派厨师备料 · 消耗1份</small>
       </button>
     </div>
+    <div class="portion-list">
+      <div v-for="p in game.portions" :key="p.id" class="portion-chip"
+        :class="{ carried: p.loc === 'carried' }">
+        <span>{{ recipes[p.recipe].icon }}</span>
+        <b>#{{ p.id }}</b>
+        <small>{{
+          p.loc === "carried"
+            ? `${chefName(game, p.carrier)}手持中`
+            : p.reservedBy
+              ? `${chefName(game, p.reservedBy)}已认领`
+              : "备料台"
+        }}</small>
+      </div>
+      <p v-if="!game.portions.length" class="muted">备料台暂无食材</p>
+    </div>
     <p class="muted">
-      已备 {{ game.portions.length }} / 6 份 · 在灶台选择空闲设备下锅
+      台上 {{ game.portions.filter((p) => p.loc === 'prep').length }} / 6 份 ·
+      手持 {{ game.portions.filter((p) => p.loc === 'carried').length }} 份
     </p>
   </section>
 </template>

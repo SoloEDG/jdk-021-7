@@ -7,7 +7,8 @@
     "dev": "vite --host 0.0.0.0",
     "typecheck": "vue-tsc --noEmit",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "sim": "esbuild scripts/sim-check.ts scripts/e2e-check.ts --bundle --platform=node --format=esm --outdir=scripts/.build && node --test scripts/.build/sim-check.js scripts/.build/e2e-check.js"
   },
   "dependencies": {
     "vue": "^3.5.13"

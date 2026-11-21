@@ -5,7 +5,17 @@ export function closeShift(g: Game) {
   g.ended = true;
   g.portions = [];
   g.dishes = [];
+  g.tasks = [];
   g.stoves.forEach((s) => (s.portion = null));
+  g.chefs.forEach((c) => {
+    c.taskId = null;
+    c.path = [];
+    c.avoid = [];
+    c.trail = [];
+    c.mode = "idle";
+    c.waitReason = "";
+    c.blockedTicks = 0;
+  });
   g.best = Math.max(g.best, totals(g).net);
   g.notice = "午市结束，辛苦了，主厨！";
 }

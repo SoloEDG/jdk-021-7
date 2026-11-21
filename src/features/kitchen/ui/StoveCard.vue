@@ -43,27 +43,34 @@ defineEmits<{ command: [cmd: Command] }>();
         class="warm"
         @click="$emit('command', { type: 'lift', id: stove.id })"
       >
-        起锅
+        派厨师起锅
       </button></template
     ><template v-else
       ><p class="muted">等待食材下锅</p>
       <div class="portion-picker">
         <button
           v-for="p in game.portions.filter(
-            (p) => recipes[p.recipe].station === stove.kind,
+            (p) =>
+              recipes[p.recipe].station === stove.kind && p.loc === 'prep',
           )"
           :key="p.id"
           class="tiny soft"
+          :disabled="!!p.reservedBy"
+          :title="p.reservedBy ? '已有厨师负责这份食材（归属唯一）' : ''"
           @click="
             $emit('command', { type: 'cook', portion: p.id, stove: stove.id })
           "
         >
-          {{ recipes[p.recipe].icon }} #{{ p.id }} 下锅</button
+          {{ recipes[p.recipe].icon }} #{{ p.id }}
+          {{ p.reservedBy ? "已派" : "下锅" }}</button
         ><small
           v-if="
-            !game.portions.some((p) => recipes[p.recipe].station === stove.kind)
+            !game.portions.some(
+              (p) =>
+                recipes[p.recipe].station === stove.kind && p.loc === 'prep',
+            )
           "
-          >先到备料台准备食材</small
+          >先派厨师到备料台准备食材</small
         >
       </div></template
     >
